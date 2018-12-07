@@ -25,7 +25,7 @@ with the base models, combine the list.
 
 Currently, this repo implements three combining methods `average`, `sum`, and `count`.
 
-For more details about how to use the module, see the [example notebook](./bagging_example.ipynb)
+For more details about how to use the module, see the [example notebook](./als_bagging_on_movielens.ipynb)
 which utilizes multiple [ALS](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#module-pyspark.ml.recommendation)
 for movie recommendation
 
