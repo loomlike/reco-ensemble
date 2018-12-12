@@ -30,3 +30,11 @@ which utilizes multiple [ALS](https://spark.apache.org/docs/latest/api/python/py
 for movie recommendation
 
 ## Results
+Performance metrics on MovieLens 100k dataset
+* x-axis: Number of base-models generated
+* Max: Max value yielded by the base-models
+* Min: Min value yielded by the base-models
+* Avg: Averaged values of the base-model outcomes
+* Bagging: Ensemble results of the base-models
+
+![movielens_100k_results](./movielens_100k_results.jpg)
