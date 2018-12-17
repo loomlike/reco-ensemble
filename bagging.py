@@ -1,3 +1,5 @@
+# Copyright 2018 The reco-ensemble Authors. All rights reserved.
+# Licensed under the MIT License.
 """
 Recommendation Bagging Ensemble
 """
