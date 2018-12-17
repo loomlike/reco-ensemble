@@ -31,12 +31,12 @@ For more details about how to use the module, see the [example notebook](./als_b
 which utilizes multiple [ALS](https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#module-pyspark.ml.recommendation)
 for movie recommendation
 
-## Results
-Performance metrics on MovieLens 100k dataset
-* x-axis: Number of base-models generated
-* Max: Max value yielded by the base-models
-* Min: Min value yielded by the base-models
-* Avg: Averaged values of the base-model outcomes
-* Bagging: Ensemble results of the base-models
+## Preliminary Results
+Top-k (=10) recommendation performance metrics on MovieLens 100k dataset
+* x-axis: Number of base models (ALS), *M*, in the bagging model 
+* Max: Max metric value among the *M* base models
+* Min: Min metric value among the *M* base models
+* Avg: Averaged metric values of the *M* base models
+* Bagging: Ensemble results of the *M* base models
 
 ![movielens_100k_results](./movielens_100k_results.jpg)
