@@ -42,7 +42,7 @@ class RecoBagging:
         self.models = []
 
         # Cache the models' recommendation results
-        self.reco_output_df = None
+        self.reco_lists_df = None
 
     def fit(self, train_df):
         """ Fit models.
@@ -53,9 +53,9 @@ class RecoBagging:
 
         # Reset models and outputs
         self.models.clear()
-        if self.reco_output_df is not None:
-            self.reco_output_df.unpersist()
-            self.reco_output_df = None
+        if self.reco_lists_df is not None:
+            self.reco_lists_df.unpersist()
+            self.reco_lists_df = None
 
         for i in range(self.num_models):
             # Randomize model hyper-parameter if the value is given as a range (tuple or list)
@@ -102,15 +102,14 @@ class RecoBagging:
             if DEBUG:
                 print("Recommending by", i)
 
-            recommendations = (
-                self.models[i]
-                .recommendForUserSubset(test_df, top_k)
+            recommendation_lists = self.models[i].recommendForUserSubset(test_df, top_k)
+                .withColumn("model", F.lit(i))
+            recommendations = recommendation_lists
                 .withColumn("recommendations", F.explode("recommendations"))
                 .select(
                     self.user_col,
                     F.col("recommendations." + self.item_col),
-                    F.col("recommendations.rating").alias(self.rating_col),
-                    F.lit(i).alias("model"),
+                    F.col("recommendations.rating").alias(self.rating_col)
                 )
             )
 
@@ -126,22 +125,24 @@ class RecoBagging:
                 )
 
             if i == 0:
-                self.reco_output_df = recommendations
+                self.reco_lists_df = recommendation_lists
+                reco_df = recommendations
             else:
-                self.reco_output_df = self.reco_output_df.union(recommendations)
+                self.reco_lists_df = self.reco_lists_df.union(recommendation_lists)
+                reco_df = reco_df.union(recommendations)
 
-        self.reco_output_df.cache()
+        self.reco_lists_df.cache()
 
         if merge_by == "average" or merge_by == "avg":
-            merged = self.reco_output_df.groupBy(self.user_col, self.item_col).agg(
+            merged = reco_df.groupBy(self.user_col, self.item_col).agg(
                 F.avg(self.rating_col).alias(self.rating_col)
             )
         elif merge_by == "sum":
-            merged = self.reco_output_df.groupBy(self.user_col, self.item_col).agg(
+            merged = reco_df.groupBy(self.user_col, self.item_col).agg(
                 F.sum(self.rating_col).alias(self.rating_col)
             )
         elif merge_by == "count" or merge_by == "cnt":
-            merged = self.reco_output_df.groupBy(self.user_col, self.item_col).agg(
+            merged = reco_df.groupBy(self.user_col, self.item_col).agg(
                 F.count(self.rating_col).alias(self.rating_col)
             )
 
