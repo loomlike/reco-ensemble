@@ -1,9 +1,11 @@
 # Ensemble of Recommendation Algorithm
-PySpark implementation of Bagging Ensemble for recommendation systems
+PySpark implementation of Bagging Ensemble for recommendation systems.
+
+More details about the best practices for building recommendation systems can be found at [Recommenders GitHub](https://github.com/Microsoft/Recommenders).
 
 
 ## Prerequisite
-* Basic knowledge on [recommender systems](https://en.wikipedia.org/wiki/Recommender_system).
+* Basic knowledge on [recommender systems](https://en.wikipedia.org/wiki/Recommender_system)
 * pySpark
 
 
