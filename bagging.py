@@ -102,16 +102,15 @@ class RecoBagging:
             if DEBUG:
                 print("Recommending by", i)
 
-            recommendation_lists = self.models[i].recommendForUserSubset(test_df, top_k)
+            recommendation_lists = self.models[i].recommendForUserSubset(test_df, top_k) \
                 .withColumn("model", F.lit(i))
-            recommendations = recommendation_lists
-                .withColumn("recommendations", F.explode("recommendations"))
+            recommendations = recommendation_lists \
+                .withColumn("recommendations", F.explode("recommendations")) \
                 .select(
                     self.user_col,
                     F.col("recommendations." + self.item_col),
                     F.col("recommendations.rating").alias(self.rating_col)
                 )
-            )
 
             # min-max scaling for each recommender output
             if scale:
